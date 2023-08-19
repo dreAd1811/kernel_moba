@@ -1,5 +1,6 @@
 deps_config := \
-	arch/x86/Kconfig.debug \
+	drivers/hwtracing/coresight/Kconfig \
+	arch/arm64/Kconfig.debug \
 	lib/Kconfig.ubsan \
 	lib/Kconfig.kgdb \
 	samples/Kconfig \
@@ -366,7 +367,6 @@ deps_config := \
 	drivers/virt/vboxguest/Kconfig \
 	drivers/virt/Kconfig \
 	drivers/vlynq/Kconfig \
-	virt/lib/Kconfig \
 	drivers/vfio/mdev/Kconfig \
 	drivers/vfio/platform/reset/Kconfig \
 	drivers/vfio/platform/Kconfig \
@@ -1214,9 +1214,16 @@ deps_config := \
 	block/Kconfig \
 	scripts/gcc-plugins/Kconfig \
 	kernel/gcov/Kconfig \
+	arch/arm64/crypto/Kconfig \
 	drivers/vhost/Kconfig \
+	virt/lib/Kconfig \
 	virt/kvm/Kconfig \
-	arch/x86/kvm/Kconfig \
+	arch/arm64/kvm/Kconfig \
+	drivers/acpi/arm64/Kconfig \
+	drivers/acpi/dptf/Kconfig \
+	drivers/acpi/apei/Kconfig \
+	drivers/acpi/nfit/Kconfig \
+	drivers/acpi/Kconfig \
 	drivers/firmware/qcom/Kconfig \
 	drivers/firmware/tegra/Kconfig \
 	drivers/firmware/meson/Kconfig \
@@ -1224,11 +1231,16 @@ deps_config := \
 	drivers/firmware/google/Kconfig \
 	drivers/firmware/broadcom/Kconfig \
 	drivers/firmware/Kconfig \
-	drivers/rapidio/switches/Kconfig \
-	drivers/rapidio/devices/Kconfig \
-	drivers/rapidio/Kconfig \
-	drivers/pcmcia/Kconfig \
-	drivers/eisa/Kconfig \
+	drivers/cpufreq/Kconfig.powerpc \
+	drivers/cpufreq/Kconfig.arm \
+	drivers/cpufreq/Kconfig.x86 \
+	drivers/cpufreq/Kconfig \
+	drivers/cpuidle/Kconfig.powerpc \
+	drivers/cpuidle/Kconfig.mips \
+	drivers/cpuidle/Kconfig.arm \
+	drivers/cpuidle/Kconfig \
+	kernel/power/Kconfig \
+	kernel/Kconfig.hz \
 	drivers/pci/switch/Kconfig \
 	drivers/pci/endpoint/functions/Kconfig \
 	drivers/pci/endpoint/Kconfig \
@@ -1237,28 +1249,8 @@ deps_config := \
 	drivers/pci/hotplug/Kconfig \
 	drivers/pci/pcie/Kconfig \
 	drivers/pci/Kconfig \
-	drivers/idle/Kconfig \
-	drivers/cpuidle/Kconfig.powerpc \
-	drivers/cpuidle/Kconfig.mips \
-	drivers/cpuidle/Kconfig.arm \
-	drivers/cpuidle/Kconfig \
-	drivers/cpufreq/Kconfig.powerpc \
-	drivers/cpufreq/Kconfig.arm \
-	drivers/cpufreq/Kconfig.x86 \
-	drivers/cpufreq/Kconfig \
-	drivers/sfi/Kconfig \
-	drivers/acpi/arm64/Kconfig \
-	drivers/acpi/dptf/Kconfig \
-	drivers/acpi/apei/Kconfig \
-	drivers/acpi/nfit/Kconfig \
-	drivers/acpi/Kconfig \
-	kernel/power/Kconfig \
-	kernel/livepatch/Kconfig \
-	kernel/Kconfig.hz \
-	arch/x86/events/Kconfig \
-	arch/x86/Kconfig.cpu \
-	arch/x86/xen/Kconfig \
-	arch/x86/Kconfig \
+	arch/arm64/Kconfig.platforms \
+	arch/arm64/Kconfig \
 	arch/Kconfig \
 	usr/Kconfig \
 	kernel/rcu/Kconfig \
@@ -1272,25 +1264,28 @@ deps_config := \
 include/config/auto.conf: \
 	$(deps_config)
 
-ifneq "$(ARCH)" "x86"
+ifneq "$(ARCH)" "arm64"
 include/config/auto.conf: FORCE
 endif
 ifneq "$(KERNELVERSION)" "4.19.81"
 include/config/auto.conf: FORCE
 endif
-ifneq "$(CC_VERSION_TEXT)" "gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0"
+ifneq "$(CC_VERSION_TEXT)" "Proton clang version 13.0.0 (https://github.com/llvm/llvm-project b4fd512c36ca344a3ff69350219e8b0a67e9472a)"
 include/config/auto.conf: FORCE
 endif
 ifneq "$(srctree)" "."
 include/config/auto.conf: FORCE
 endif
-ifneq "$(CC)" "python ./scripts/gcc-wrapper.py gcc"
+ifneq "$(CC)" "clang"
 include/config/auto.conf: FORCE
 endif
-ifneq "$(LD)" "ld"
+ifneq "$(LD)" "aarch64-linux-gnu-ld"
 include/config/auto.conf: FORCE
 endif
-ifneq "$(SRCARCH)" "x86"
+ifneq "$(CLANG_FLAGS)" "--target=aarch64-linux-gnu --prefix=/home/dread/toolchains/proton-clang/bin/ --gcc-toolchain=/home/dread/toolchains/proton-clang -no-integrated-as -Werror=unknown-warning-option"
+include/config/auto.conf: FORCE
+endif
+ifneq "$(SRCARCH)" "arm64"
 include/config/auto.conf: FORCE
 endif
 ifneq "$(HOSTCXX)" "g++"
